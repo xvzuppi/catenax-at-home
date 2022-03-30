@@ -37,7 +37,7 @@ spec:
           - name:  EDC_KEYSTORE
             value: /connector-config/cert.pfx
           - name:  EDC_KEYSTORE_PASSWORD
-            value: 123456
+            value: "123456"
           - name:  EDC_FS_CONFIG
             value: /connector-config/configuration.properties
         volumeMounts:
