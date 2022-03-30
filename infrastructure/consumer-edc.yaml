@@ -47,3 +47,43 @@ spec:
         - name: consumer-control-plane-config
           configMap:
             name: consumer-control-plane-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-data-plane-config
+data:
+  configuration.properties: "web.http.port=9191\r\nweb.http.path=/api\r\nweb.http.public.port=9192\r\nweb.http.public.path=/public\r\n\r\n# Not sure if the following two are needed\r\nweb.http.control.port=9193\r\nweb.http.control.path=/control\r\n\r\nedc.controlplane.validation-endpoint=http://consumer-control-plane:9192/validation/validation\r\n"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-data-plane
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: consumer-data-plane
+  template:
+    metadata:
+      labels:
+        app: consumer-data-plane
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/edc/consumer-data-plane:feature-ART3-305-rohrputzer-support-latest
+        imagePullPolicy: Always
+        name: consumer-data-plane
+        ports:
+        - containerPort: 9191 # data plane
+        - containerPort: 8090 # java debug
+        env:    
+          - name:  EDC_FS_CONFIG
+            value: /connector-config/configuration.properties
+        volumeMounts:
+            - name: consumer-data-plane-config
+              mountPath: /connector-config
+      volumes:
+        - name: consumer-data-plane-config
+          configMap:
+            name: consumer-data-plane-config
