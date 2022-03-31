@@ -107,20 +107,20 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: api-wrapper
+      app: consumer-api-wrapper
   template:
     metadata:
       labels:
-        app: api-wrapper
+        app: consumer-api-wrapper
     spec:
       containers:
       - image: cxtsiacr.azurecr.io/edc/consumer-api-wrapper:catenax-at-home-latest
         imagePullPolicy: Always
         name: consumer-api-wrapper
         ports:
-        - containerPort: 9191 # data plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # API
+        - containerPort: 9192 # CALLBACK
+        - containerPort: 8090 # JDB
         env:    
           - name:  EDC_FS_CONFIG
             value: /connector-config/configuration.properties

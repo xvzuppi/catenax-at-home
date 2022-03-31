@@ -29,9 +29,9 @@ spec:
         imagePullPolicy: Always
         name: provider-control-plane
         ports:
-        - containerPort: 9191 # control plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # API
+        - containerPort: 9192 # VALIDATION
+        - containerPort: 8090 # JDB
         env:    
           - name:  EDC_VAULT
             value: /connector-config/vault.properties
@@ -76,9 +76,10 @@ spec:
         imagePullPolicy: Always
         name: provider-data-plane
         ports:
-        - containerPort: 9191 # data plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # API
+        - containerPort: 9192 # PUBLIC
+        - containerPort: 9193 # CONTROL
+        - containerPort: 8090 # JDB
         env:    
           - name:  EDC_FS_CONFIG
             value: /connector-config/configuration.properties
@@ -117,9 +118,7 @@ spec:
         imagePullPolicy: Always
         name: provider-backend-service
         ports:
-        - containerPort: 9191 # data plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # WEB
         env:    
           - name:  EDC_FS_CONFIG
             value: /connector-config/configuration.properties
