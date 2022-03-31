@@ -49,10 +49,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - catenax-at-home.demo.catena-x.net
+        - catenax-at-home.germanywestcentral.cloudapp.azure.com
       secretName: catenax-at-home-secret
   rules:
-    - host: catenax-at-home.demo.catena-x.net
+    - host: catenax-at-home.germanywestcentral.cloudapp.azure.com
       http:
         paths:
           - path: /proxy(/|$)(.*)
