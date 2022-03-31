@@ -57,10 +57,10 @@ spec:
   type: ClusterIP
   ports:
   - port: 9191
-    name: API
+    name: api
     targetPort: 9191
   - port: 9192
-    name: VALIDATION
+    name: validation
     targetPort: 9192
   selector:
     app: provider-control-plane
@@ -115,13 +115,13 @@ spec:
   type: ClusterIP
   ports:
   - port: 9191
-    name: API
+    name: api
     targetPort: 9191
   - port: 9192
-    name: PUBLIC
+    name: public
     targetPort: 9192
   - port: 9193
-    name: CONTROL
+    name: control
     targetPort: 9193
   selector:
     app: provider-data-plane
@@ -173,7 +173,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 9191
-    name: WEB
+    name: web
     targetPort: 9191
   selector:
     app: provider-backend-service

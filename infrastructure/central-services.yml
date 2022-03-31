@@ -29,7 +29,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 4242
-    name: API
+    name: api
     targetPort: 4242
   selector:
     app: hub-service
@@ -65,7 +65,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 4243
-    name: API
+    name: api
     targetPort: 4243
   selector:
     app: registry-service

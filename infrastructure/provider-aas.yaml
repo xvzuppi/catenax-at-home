@@ -29,7 +29,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 4244
-    name: API
+    name: api
     targetPort: 4244
   selector:
     app: provider-aas-service

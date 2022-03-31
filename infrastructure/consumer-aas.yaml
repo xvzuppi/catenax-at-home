@@ -29,7 +29,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 4245
-    name: API
+    name: api
     targetPort: 4245
   selector:
     app: consumer-aas-proxy
