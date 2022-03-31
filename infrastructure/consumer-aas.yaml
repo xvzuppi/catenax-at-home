@@ -33,3 +33,33 @@ spec:
     targetPort: 4245
   selector:
     app: consumer-aas-proxy
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: consumer-aas-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/proxy"
+spec:
+  tls:
+    - hosts:
+        - catenax-at-home.demo.catena-x.net
+      secretName: catenax-at-home-secret
+  rules:
+    - host: catenax-at-home.demo.catena-x.net
+      http:
+        paths:
+          - path: /proxy(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: consumer-aas-proxy
+                port:
+                  number: 4245
+
