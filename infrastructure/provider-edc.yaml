@@ -94,7 +94,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: provider-backend-service
+  name: provider-backend-service-config
 data:
  configuration.properties: web.http.port=9191
 ---
