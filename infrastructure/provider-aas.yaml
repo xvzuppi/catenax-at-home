@@ -45,7 +45,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/proxy"
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/provider"
 spec:
   tls:
     - hosts:
@@ -55,7 +55,7 @@ spec:
     - host: catenax-at-home.demo.catena-x.net
       http:
         paths:
-          - path: /adapter(/|$)(.*)
+          - path: /provider(/|$)(.*)
             pathType: Prefix
             backend:
               service:
