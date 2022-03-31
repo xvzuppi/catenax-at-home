@@ -20,3 +20,15 @@ spec:
         ports:
         - containerPort: 4244 # API
         - containerPort: 8090 # JDB
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: provider-aas-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4244
+    targetPort: 4244
+  selector:
+    app: provider-aas-service

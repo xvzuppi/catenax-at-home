@@ -50,6 +50,20 @@ spec:
             name: consumer-control-plane-config
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-control-plane
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  - port: 9192
+    targetPort: 9192
+  selector:
+    app: consumer-control-plane
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: consumer-data-plane-config
@@ -92,6 +106,22 @@ spec:
             name: consumer-data-plane-config
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-data-plane
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  - port: 9192
+    targetPort: 9192
+  - port: 9193
+    targetPort: 9193
+  selector:
+    app: consumer-data-plane
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: consumer-api-wrapper-config
@@ -131,3 +161,17 @@ spec:
         - name: consumer-api-wrapper-config
           configMap:
             name: consumer-api-wrapper-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-api-wrapper
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  - port: 9192
+    targetPort: 9192
+  selector:
+    app: consumer-api-wrapper

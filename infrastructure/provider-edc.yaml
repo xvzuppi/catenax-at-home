@@ -50,6 +50,20 @@ spec:
             name: provider-control-plane-config
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: provider-control-plane
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  - port: 9192
+    targetPort: 9192
+  selector:
+    app: provider-control-plane
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: provider-data-plane-config
@@ -92,6 +106,22 @@ spec:
             name: provider-data-plane-config
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: provider-data-plane
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  - port: 9192
+    targetPort: 9192
+  - port: 9193
+    targetPort: 9193
+  selector:
+    app: provider-data-plane
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: provider-backend-service-config
@@ -129,3 +159,15 @@ spec:
         - name: provider-backend-service-config
           configMap:
             name: provider-backend-service-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: provider-backend-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9191
+    targetPort: 9191
+  selector:
+    app: provider-backend-service

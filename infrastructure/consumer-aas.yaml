@@ -20,3 +20,15 @@ spec:
         ports:
         - containerPort: 4245 # API
         - containerPort: 8090 # JDB
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-aas-proxy
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4245
+    targetPort: 4245
+  selector:
+    app: consumer-aas-proxy
