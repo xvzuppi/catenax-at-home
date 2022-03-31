@@ -29,9 +29,9 @@ spec:
         imagePullPolicy: Always
         name: consumer-control-plane
         ports:
-        - containerPort: 9191 # control plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # API
+        - containerPort: 9192 # VALIDATION
+        - containerPort: 8090 # JDB
         env:    
           - name:  EDC_VAULT
             value: /connector-config/vault.properties
@@ -76,9 +76,10 @@ spec:
         imagePullPolicy: Always
         name: consumer-data-plane
         ports:
-        - containerPort: 9191 # data plane
-        - containerPort: 9192 # custom service
-        - containerPort: 8090 # java debug
+        - containerPort: 9191 # API
+        - containerPort: 9192 # PUBLIC
+        - containerPort: 9193 # CONTROL
+        - containerPort: 8090 # JDB
         env:    
           - name:  EDC_FS_CONFIG
             value: /connector-config/configuration.properties
@@ -89,3 +90,44 @@ spec:
         - name: consumer-data-plane-config
           configMap:
             name: consumer-data-plane-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-api-wrapper-config
+data:
+  configuration.properties: "web.http.port=9191\r\nweb.http.path=/api\r\n\r\nweb.http.callback.port=9192\r\nweb.http.callback.path=/callback\r\n\r\nwrapper.auth.basic.someuser=somepassword\r\n\r\nwrapper.consumer.edc.url=http://consumer-control-plane:9191/api\r\nwrapper.consumer.edc.apikey.name=X-Api-Key\r\nwrapper.consumer.edc.apikey.value=123456\r\n"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-api-wrapper
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: api-wrapper
+  template:
+    metadata:
+      labels:
+        app: api-wrapper
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/edc/consumer-api-wrapper:catenax-at-home-latest
+        imagePullPolicy: Always
+        name: consumer-api-wrapper
+        ports:
+        - containerPort: 9191 # data plane
+        - containerPort: 9192 # custom service
+        - containerPort: 8090 # java debug
+        env:    
+          - name:  EDC_FS_CONFIG
+            value: /connector-config/configuration.properties
+        volumeMounts:
+            - name: consumer-api-wrapper-config
+              mountPath: /connector-config
+      volumes:
+        - name: consumer-api-wrapper-config
+          configMap:
+            name: consumer-api-wrapper-config

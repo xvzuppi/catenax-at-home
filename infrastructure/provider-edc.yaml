@@ -89,3 +89,44 @@ spec:
         - name: provider-data-plane-config
           configMap:
             name: provider-data-plane-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provider-backend-service
+data:
+ configuration.properties: web.http.port=9191
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provider-backend-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: provider-backend-service
+  template:
+    metadata:
+      labels:
+        app: provider-backend-service
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/edc/provider-api-wrapper:catenax-at-home-latest
+        imagePullPolicy: Always
+        name: provider-backend-service
+        ports:
+        - containerPort: 9191 # data plane
+        - containerPort: 9192 # custom service
+        - containerPort: 8090 # java debug
+        env:    
+          - name:  EDC_FS_CONFIG
+            value: /connector-config/configuration.properties
+        volumeMounts:
+            - name: provider-backend-service-config
+              mountPath: /connector-config
+      volumes:
+        - name: provider-backend-service-config
+          configMap:
+            name: provider-backend-service-config
