@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hub-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: hub-service
+  template:
+    metadata:
+      labels:
+        app: hub-service
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/semantics/hub:catenax-at-home-latest
+        imagePullPolicy: Always
+        name: hub-service
+        ports:
+        - containerPort: 4242 # API
+        - containerPort: 8090 # JDB
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: registry-service
+  template:
+    metadata:
+      labels:
+        app: registry-service
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/semantics/registry:catenax-at-home-latest
+        imagePullPolicy: Always
+        name: registry-service
+        ports:
+        - containerPort: 4243 # API
+        - containerPort: 8090 # JDB

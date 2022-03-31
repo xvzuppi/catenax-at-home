@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-aas-proxy
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: consumer-aas-proxy
+  template:
+    metadata:
+      labels:
+        app: consumer-aas-proxy
+    spec:
+      containers:
+      - image: cxtsiacr.azurecr.io/edc/consumer-aas-proxy:catenax-at-home-latest
+        imagePullPolicy: Always
+        name: hub-service
+        ports:
+        - containerPort: 4245 # API
+        - containerPort: 8090 # JDB
