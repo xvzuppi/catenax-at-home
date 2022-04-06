@@ -44,6 +44,8 @@ spec:
         volumeMounts:
             - name: consumer-control-plane-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: consumer-control-plane-config
           configMap:
@@ -102,6 +104,8 @@ spec:
         volumeMounts:
             - name: consumer-data-plane-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: consumer-data-plane-config
           configMap:
@@ -162,6 +166,8 @@ spec:
         volumeMounts:
             - name: consumer-api-wrapper-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: consumer-api-wrapper-config
           configMap:
@@ -188,7 +194,7 @@ kind: Ingress
 metadata:
   name: consumer-api-wrapper-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -198,10 +204,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - catenax-at-home.demo.catena-x.net
+        - catenax-at-home.mx.k8scluster.de
       secretName: catenax-at-home-secret
   rules:
-    - host: catenax-at-home.demo.catena-x.net
+    - host: catenax-at-home.mx.k8scluster.de
       http:
         paths:
           - path: /wrapper(/|$)(.*)

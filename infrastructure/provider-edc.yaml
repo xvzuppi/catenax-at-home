@@ -44,6 +44,8 @@ spec:
         volumeMounts:
             - name: provider-control-plane-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: provider-control-plane-config
           configMap:
@@ -102,6 +104,8 @@ spec:
         volumeMounts:
             - name: provider-data-plane-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: provider-data-plane-config
           configMap:
@@ -160,6 +164,8 @@ spec:
         volumeMounts:
             - name: provider-backend-service-config
               mountPath: /connector-config
+      imagePullSecrets:
+      - name: cx-registry
       volumes:
         - name: provider-backend-service-config
           configMap:

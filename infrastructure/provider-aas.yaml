@@ -20,6 +20,8 @@ spec:
         ports:
         - containerPort: 4244 # API
         - containerPort: 8090 # JDB
+      imagePullSecrets:
+      - name: cx-registry
 ---
 apiVersion: v1
 kind: Service
@@ -39,7 +41,7 @@ kind: Ingress
 metadata:
   name: provider-aas-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -49,10 +51,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - catenax-at-home.demo.catena-x.net
+        - catenax-at-home.mx.k8scluster.de
       secretName: catenax-at-home-secret
   rules:
-    - host: catenax-at-home.demo.catena-x.net
+    - host: catenax-at-home.mx.k8scluster.de
       http:
         paths:
           - path: /provider(/|$)(.*)
